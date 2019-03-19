@@ -1,84 +1,80 @@
-/*
- * Implement all your JavaScript in this file!
- */
+// logic for calculator app which is a project for edX course
 
-var val1 = ''; // this is the one on display
-var val0 = '';
+// changing symbol handler
+
+var current = '';
+var holder;
 var func = '';
 
-function keyPress(e){
-    if (e == 13){
-      results();
-    }
+function updateHolder() {
+  // if holder is empty
+  if (!holder) {holder = parseInt(current);}
+
+  // if holder has something in it
+  else {calculation();}
+
+  // display current output
+  $('#display').val(holder);
+
+  // reset current data
+  current = '';
 }
 
 $('button').click(function() {
-  val1 += String(this.value);
-  $("#display").val(val1);
-}
-);
+  current += String(this.value);
+  $("#display").val(current);
+});
 
 $("#addButton").click(function(){
-  val0 = val1;
-  func = "add";
-  val1 = '';
+  updateHolder();
+  func = 'add';
+
 });
 
 $("#subtractButton").click(function(){
-  val0 = val1;
-  func = "subtract";
-  val1 = '';
+  updateHolder();
+  func = 'subtract';
 });
 
 $("#multiplyButton").click(function(){
-  val0 = val1;
-  func = "multiply";
-  val1 = '';
+  updateHolder();
+  func = 'multiply';
 });
 
 $("#divideButton").click(function(){
-  val0 = val1;
-  func = "divide";
-  val1 = '';
-});
-
-$("#divideButton").click(function(){
-  val0 = val1;
-  func = "divide";
-  val1 = '';
+  updateHolder();
+  func = 'divide';
 });
 
 $("#clearButton").click(function(){
-  val0 = val1 = '';
-  $('#display').val('');
+  current = '';
+  holder = null;
 });
-// divide by 0 get infinity
 
-function results(){
+$("#equalsButton").click(function(){
+  calculation(func);
+  $('#display').val(holder);
+  current = holder;
+  holder = null;
+});
+
+// Updater for the holder
+function calculation(){
   switch(func) {
     case 'add':
-      val1 = String(parseInt(val0) + parseInt(val1));
-      val0 = '';
-      $("#display").val(parseInt(val1));
+      holder =  holder + parseInt(current);
       break;
 
     case 'subtract':
-      val1 = String(parseInt(val0) - parseInt(val1));
-      val0 = '';
-      $("#display").val(parseInt(val1));      break;
+      holder = holder - parseInt(current);
+      break;
 
     case 'divide':
-      val1 = String(parseFloat(val0) / parseInt(val1));
-      val0 = '';
-      $("#display").val(parseFloat(val1));
+      holder = holder / parseInt(current);
       break;
 
     case 'multiply':
-      val1 = String(parseInt(val0) * parseInt(val1));
-      val0 = '';
-      $("#display").val(parseInt(val1));
+      holder = holder * parseInt(current);
       break;
     }
 }
-
-$("#equalsButton").click(results);
